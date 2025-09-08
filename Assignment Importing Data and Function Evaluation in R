@@ -1,0 +1,6 @@
+https://federicogorrini.blogspot.com/
+
+Corrected myMean function:
+myMean <- function(x) {
+  return(sum(x) / length(x))
+}
