@@ -1,0 +1,43 @@
+https://federicogorrini.blogspot.com/
+
+# Step 1: Load and Inspect Data
+
+# Load built-in dataset
+data("mtcars")
+
+# Show first few rows
+head(mtcars)
+
+# Describe the structure
+str(mtcars)
+
+# Step 2: Apply Generic Functions
+
+# Generic: summary()
+summary(mtcars)
+
+# Generic: plot()
+plot(mtcars$mpg, mtcars$hp,
+     main = "Miles per Gallon vs Horsepower",
+     xlab = "Miles per Gallon",
+     ylab = "Horsepower")
+
+# Step 3: Create S3 Object
+
+s3_obj <- list(name = "Emma", age = 21, GPA = 3.8)
+class(s3_obj) <- "student_s3"
+
+# Test the S3 print method
+print(s3_obj)
+
+# Step 4: Create S4 Object
+
+setClass("student_s4",
+         slots = c(name = "character",
+                   age = "numeric",
+                   GPA = "numeric"))
+
+s4_obj <- new("student_s4", name = "Emma", age = 21, GPA = 3.8)
+
+# Test the S4 method
+s4_obj
