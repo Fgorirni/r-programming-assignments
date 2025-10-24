@@ -1,0 +1,42 @@
+https://federicogorrini.blogspot.com/
+
+# Install packages
+library(lattice)
+library(ggplot2)
+
+# Load the data 
+data("iris", package = "datasets")
+head(iris) 
+
+# Scatter plot
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     main = "Base: Sepal Width vs Sepal Length",
+     xlab = "Sepal Length",
+     ylab = "Sepal Width")
+
+# Histogram
+hist(iris$Petal.Length,
+     main = "Base: Distribution of Petal Length",
+     xlab = "Petal Length")
+
+# Lattice conditional scatter plot (small multiples)
+# Panels split by Species
+xyplot(Sepal.Width ~ Sepal.Length | Species,
+       data = iris,
+       main = "Lattice: Sepal Width vs Sepal Length by Species")
+
+# Lattice box-and-whisker plot: z by category
+bwplot(Petal.Length ~ Species,
+       data = iris,
+       main = "Lattice: Petal Length by Species")
+
+# ggplot2 scatter plot: color by Species
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  labs(title = "ggplot2: Sepal Width vs Sepal Length")
+
+# ggplot2 histogram with facets
+ggplot(iris, aes(x = Petal.Length)) +
+  geom_histogram(binwidth = 0.3) +
+  facet_wrap(~ Species) +
+  labs(title = "ggplot2: Petal Length by Species")
