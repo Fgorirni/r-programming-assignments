@@ -1,0 +1,69 @@
+https://federicogorrini.blogspot.com/
+
+# Step 1)
+
+```{r error=TRUE}
+
+tukey_multiple <- function(x) {
+  outliers <- array(TRUE, dim = dim(x))
+  for (j in 1:ncol(x)) {
+    # BUG: using && (wrong)
+    outliers[, j] <- outliers[, j] && tukey.outlier(x[, j])
+  }
+  outlier.vec <- vector("logical", length = nrow(x))
+  for (i in 1:nrow(x)) {
+    outlier.vec[i] <- all(outliers[i, ])
+  }
+  return(outlier.vec)
+}
+
+set.seed(123)
+test_mat <- matrix(rnorm(50), nrow = 10)  # 10 rows, 5 columns
+tukey_multiple(test_mat)
+
+# Step 2) Why it’s broken (in plain words)
+
+# && = “AND just the first element.”
+
+# & = “AND each element one by one (element-wise).”
+# We need element-wise. So we must use &.
+
+# Step 3)
+
+tukey.outlier <- function(v) {
+  # v must be numeric
+  qs <- quantile(v, probs = c(0.25, 0.75), na.rm = TRUE)
+  iqr <- qs[2] - qs[1]
+  lower <- qs[1] - 1.5 * iqr
+  upper <- qs[2] + 1.5 * iqr
+  (v < lower) | (v > upper)
+}
+
+# Step 4
+
+corrected_tukey <- function(x) {
+  # simple checks
+  if (!is.matrix(x)) stop("x must be a matrix.")
+  if (!is.numeric(x)) stop("x must be numeric.")
+  if (any(!is.finite(x))) stop("x has NA/NaN/Inf. Please clean your data.")
+  
+  outliers <- array(TRUE, dim = dim(x))
+  
+  # go column by column
+  for (j in seq_len(ncol(x))) {
+    # FIX: use & (element-wise), not &&
+    outliers[, j] <- outliers[, j] & tukey.outlier(x[, j])
+  }
+  
+  # a row is TRUE only if it is an outlier in EVERY column
+  outlier.vec <- logical(nrow(x))
+  for (i in seq_len(nrow(x))) {
+    outlier.vec[i] <- all(outliers[i, ])
+  }
+  
+  outlier.vec
+}
+
+set.seed(123)
+test_mat <- matrix(rnorm(50), nrow = 10)
+corrected_tukey(test_mat)
