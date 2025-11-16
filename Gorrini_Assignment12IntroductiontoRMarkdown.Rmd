@@ -1,0 +1,81 @@
+---
+title: "Gorrini_Assignment12IntroductiontoRMarkdown"
+output: html_document
+date: "2025-11-16"
+---
+
+# Introduction
+
+I am starting to learn R Markdown, and this document is my first own practice file. I am currently taking another class that provides me with R markdown files that I just have to complete the code for. So I have never created my own before.  
+R Markdown lets me write normal text and also run R code in the same file.  
+When I click **Knit**, RStudio runs the code chunks and creates an HTML report where the text, code, and results all appear together.  
+This makes it easier for me to keep everything in one place without copying and pasting.
+
+# Text and Math
+
+Here is an example of inline math written with LaTeX: $\alpha + \beta = \gamma$.
+
+Here is a displayed math formula on its own line:
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i = 1}^{n} x_i
+$$
+
+This is the formula for the mean of values \(x_1, x_2, \dots, x_n\).
+
+# Code Chunks
+
+R code goes inside special "chunks".  
+A code chunk starts with three backticks and `{r}`, and ends with three backticks.  
+When I knit the file, RStudio runs the code inside the chunks.
+
+Below is the setup chunk. It sets options for all other chunks.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Example 1: Summary of a Dataset
+
+In this chunk, I use the built-in `cars` dataset.  
+I look at the first few rows and some summary statistics.
+
+```{r cars-summary}
+# show the first six rows of the cars dataset
+head(cars)
+
+# show summary statistics for the variables in cars
+summary(cars)
+```
+
+# Example 2: A Simple Plot with ggplot2
+
+In this chunk, I load the `ggplot2` library and make a simple line plot using the built-in `pressure` dataset.
+
+```{r pressure-plot}
+# load the ggplot2 package
+library(ggplot2)
+
+# create a line plot of pressure vs. temperature
+ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_line() +
+  labs(
+    title = "Pressure vs Temperature",
+    x = "Temperature",
+    y = "Pressure"
+  )
+```
+
+# Reflection
+
+After working through my other classes, the structure makes more sense to me.
+
+I like that I can write a paragraph explaining what I am doing, and then include a code chunk that shows the actual R code and results right below it.  
+If I change the code or the data, I can knit the file again and the report updates automatically.  
+This is easier than writing a plain report in Word or Google Docs and copying in screenshots and tables by hand.
+
+I did run into a few problems, like forgetting to put my code inside proper code chunks or not loading a package.  
+When that happened, the knit step failed or the output did not look right.  
+I learned that it helps to run each code chunk in RStudio first and to make sure the chunk starts with ```{r} and ends with ```.
+
+Overall, using R Markdown feels like a good way to create clear, reproducible reports that mix text, math, and R code.
